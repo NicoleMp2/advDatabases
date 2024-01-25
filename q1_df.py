@@ -5,7 +5,7 @@ from pyspark.sql.functions import year, month, desc , col ,dense_rank
 from pyspark.sql.window import Window
 # Create a Spark session
 spark = SparkSession.builder.appName("Query1Dataframe").config("spark.executor.instances", "4").getOrCreate()
-sys.stdout = open("outputs/Query1DF.txt", "a")
+sys.stdout = open("outputs/Query1DF.txt", "w")
 
 #TODO
 CrimeData = spark.read.csv("CrimeData.csv",header=True, inferSchema=True)

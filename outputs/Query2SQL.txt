@@ -1,0 +1,12 @@
+Query 2 SQL Execution Time: 0.0992121696472168
+
+===== Query 2 SQL Result =====
++-----------+----------+
+|Time of Day|CrimeCount|
++-----------+----------+
+|Night      |237692    |
+|Evening    |187172    |
+|Afternoon  |147657    |
+|Morning    |123371    |
++-----------+----------+
+

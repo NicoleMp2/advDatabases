@@ -1,3 +1,4 @@
+import sys
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col , to_date
 from pyspark.sql.types import DateType, IntegerType, DoubleType
@@ -6,6 +7,7 @@ from pyspark.sql.types import DateType, IntegerType, DoubleType
 spark = SparkSession.builder.appName("PrepareData")\
     .config("spark.sql.legacy.timeParserPolicy", "LEGACY")\
     .getOrCreate()
+sys.stdout = open("outputs/ConfigData.txt", "w")
 
 # Read the CSV files, format where needed and combine datasets
 CrimeData2010To2019 = spark.read.csv("data/Crime_Data_from_2010_to_2019.csv",header=True, inferSchema=True)
@@ -31,5 +33,6 @@ CrimeData = CrimeDataWithIncome.select(CrimeData2010ToPresent['*'],col('ZIPcode'
 print("Total Rows:", CrimeData.count())
 CrimeData.printSchema()
 CrimeData.coalesce(1).write.format("csv").mode("overwrite").option("header", True).save("CrimeData.csv")
-
+sys.stdout.close()
+sys.stdout = sys.__stdout__
 spark.stop()

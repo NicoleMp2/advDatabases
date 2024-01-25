@@ -1,0 +1,12 @@
+Query 2 RDD Execution Time: 15.420125961303711
+
+===== Query 2 RDD Result =====
++-----------+----------+
+|Time of Day|CrimeCount|
++-----------+----------+
+|Night      |237692    |
+|Evening    |187172    |
+|Afternoon  |147657    |
+|Morning    |123371    |
++-----------+----------+
+

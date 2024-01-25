@@ -10,20 +10,7 @@ CrimeData = spark.read.csv("CrimeData.csv",header=True, inferSchema=True)
 startTime = time.time()
 
 
-# Create a temporary SQL table for the CrimeData DataFrame
 CrimeData.createOrReplaceTempView("CrimeDataTable")
-
-# Write the SQL query for Query 1
-sql_query = """
-    SELECT Year, Month, CrimeCount, Rank
-    FROM (
-        SELECT Year, Month, COUNT(*) as CrimeCount,
-               DENSE_RANK() OVER (PARTITION BY Year ORDER BY COUNT(*) DESC) as Rank
-        FROM CrimeDataTable
-        GROUP BY Year, Month
-    ) tmp
-    WHERE Rank <= 3
-"""
 
 # Group by year and month and count the number of crimes
 MonthlyCrimeCountSQL = """
@@ -40,7 +27,7 @@ FROM ({}) MonthlyCrimeCount
 """.format(MonthlyCrimeCountSQL)
 
 # Filter the top 3 months for each year
-result_sql = """
+ResultSQL = """
 SELECT Year, Month, CrimeCount
 FROM ({}) Top3Months
 WHERE Rank <= 3
@@ -48,14 +35,14 @@ ORDER BY Year, Rank
 """.format(Top3MonthsSQL)
 
 # Execute the SQL query
-Result = spark.sql(result_sql)
+Result = spark.sql(ResultSQL)
 
 
 totalTime = time.time() - startTime
 
 
-print("Query 1 Dataframe Execution Time: " + str(totalTime) + "\n")
-print("===== Query 1 Dataframe Result =====")
+print("Query 1 SQL Execution Time: " + str(totalTime) + "\n")
+print("===== Query 1 SQL Result =====")
 Result.show(Result.count(), truncate=False)
 
 sys.stdout.close()

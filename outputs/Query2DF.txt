@@ -1,0 +1,12 @@
+Query 2 Dataframe Execution Time: 0.056900978088378906
+
+===== Query 2 Dataframe Result =====
++-----------+------+
+|Time of Day|count |
++-----------+------+
+|Night      |237692|
+|Evening    |187172|
+|Afternoon  |147657|
+|Morning    |123371|
++-----------+------+
+

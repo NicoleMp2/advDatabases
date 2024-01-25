@@ -1,6 +1,6 @@
-Query 1 Dataframe Execution Time: 0.11608028411865234
+Query 1 SQL Execution Time: 0.12349104881286621
 
-===== Query 1 Dataframe Result =====
+===== Query 1 SQL Result =====
 +----+-----+----------+
 |Year|Month|CrimeCount|
 +----+-----+----------+
