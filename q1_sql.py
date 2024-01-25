@@ -1,6 +1,6 @@
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import dense_rank
-from 
+
 # Create a Spark session
 spark = SparkSession.builder.appName("CrimeAnalysis").getOrCreate()
 

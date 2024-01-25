@@ -1,5 +1,4 @@
 .DS_Store
 .vscode/*
-Crime_Data_from_2010_to_2019.csv
-Crime_Data_from_2020_to_Present.csv
-crime_data.csv
+CrimeData.csv/*
+data/*

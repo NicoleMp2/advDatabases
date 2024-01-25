@@ -1,26 +1,27 @@
-from pyparsing import col
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import year, month, desc , count , dense_rank
+from pyspark.sql.functions import year, month, desc ,rank, col , sum
 from pyspark.sql.window import Window
-
+from pyspark.sql.types import IntegerType
 
 # Create a Spark session
-spark = SparkSession.builder.appName("CrimeAnalysis").getOrCreate()
-crime_data = spark.read.csv("crime_data.csv",header=True, inferSchema=True)
+spark = SparkSession.builder.appName("Query1Dataframe").config("spark.executor.instances", "4").getOrCreate()
+
+crime_data = spark.read.csv("CrimeData.csv",header=True, inferSchema=True)
 # Assuming you have loaded your crime_data DataFrame
 
-window_spec = Window.partitionBy(year(col('DATE OCC'))).orderBy(col('DATE OCC').desc())
+# Extract year and month from the "Date Rptd" column
+crime_data = crime_data.withColumn("Year", year("DATE OCC")).withColumn("Month", month("DATE OCC"))
 
-# Add a row number for each month within each year
-df_with_row_number = df.withColumn('row_number', F.row_number().over(window_spec))
+monthly_crime_count = crime_data.groupBy("Year", "Month").count()
 
-# Find the top 3 months for each year
-top_3_months_per_year = df_with_row_number.filter(col('row_number') <= 3) \
-    .groupBy(year(col('DATE OCC')).alias('Year'), month(col('DATE OCC')).alias('Month')) \
-    .agg({'DATE OCC': 'count'}) \
-    .orderBy('Year')
+# Define a Window specification to rank months within each year based on the crime count
+windowSpec = Window.partitionBy("Year").orderBy(desc(col("count")))
 
-# Display the results
-top_3_months_per_year.show(100, False)
-# Κλείσιμο του Spark Session
+# Calculate the crime count for each month within each year
+result_df = (monthly_crime_count.withColumn("Rank", rank().over(windowSpec))).filter(col("Rank") <= 3).orderBy("Year", "Rank")
+
+# Print the result
+result_df.show()
+
+# Stop the Spark session
 spark.stop()
