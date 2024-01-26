@@ -1,6 +1,6 @@
 import sys
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import col , to_date
+from pyspark.sql.functions import col , to_date , regexp_replace
 from pyspark.sql.types import DateType, IntegerType, DoubleType
 
 
@@ -27,6 +27,7 @@ CrimeDataWithZIP = CrimeData2010ToPresent.join(RevGeoCoding, ['LAT', 'LON'], how
 CrimeDataWithIncome = CrimeDataWithZIP.join(IncomeData2015, CrimeDataWithZIP['ZIPcode'] == IncomeData2015['Zip Code'], how='left')
 
 CrimeData = CrimeDataWithIncome.select(CrimeData2010ToPresent['*'],col('ZIPcode'), col('Community'),col('Estimated Median Income'))
+CrimeData = CrimeData.withColumn("Estimated Median Income", regexp_replace(col("Estimated Median Income"),'[$,]','') ).withColumn('Estimated Median Income', col('Estimated Median Income').cast(IntegerType())) #i will use this column for q4
 
 
 # Write the DataFrame to a CSV file

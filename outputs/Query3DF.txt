@@ -1,0 +1,23 @@
+Query 3 Dataframe Execution Time: 0.14729022979736328with 2 executors
+
+Query 3 Dataframe Execution Time: 0.1124267578125with 3 executors
+
+Query 3 Dataframe Execution Time: 0.11450600624084473with 4 executors
+
+===== Query 3 Dataframe Result =====
++--------------------+-----+
+|        Vict Descent|count|
++--------------------+-----+
+|Hispanic/Latin/Me...| 1583|
+|               Black| 1108|
+|               White| 1041|
+|               Other|  499|
+|         Other Asian|  119|
+|             Unknown|   91|
+|              Korean|    9|
+|            Japanese|    3|
+|American Indian/A...|    3|
+|             Chinese|    2|
+|            Filipino|    1|
++--------------------+-----+
+

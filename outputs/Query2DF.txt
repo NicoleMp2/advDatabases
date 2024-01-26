@@ -1,4 +1,4 @@
-Query 2 Dataframe Execution Time: 0.056900978088378906
+Query 2 Dataframe Execution Time: 0.06137490272521973
 
 ===== Query 2 Dataframe Result =====
 +-----------+------+

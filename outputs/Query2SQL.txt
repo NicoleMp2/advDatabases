@@ -1,4 +1,4 @@
-Query 2 SQL Execution Time: 0.0992121696472168
+Query 2 SQL Execution Time: 0.09846782684326172
 
 ===== Query 2 SQL Result =====
 +-----------+----------+

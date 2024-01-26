@@ -31,5 +31,5 @@ root
  |-- AREA: integer (nullable = true)
  |-- ZIPcode: string (nullable = true)
  |-- Community: string (nullable = true)
- |-- Estimated Median Income: string (nullable = true)
+ |-- Estimated Median Income: integer (nullable = true)
 
