@@ -1,6 +1,6 @@
 import sys
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import col , to_date , regexp_replace
+from pyspark.sql.functions import col , to_date , regexp_replace, year
 from pyspark.sql.types import DateType, IntegerType, DoubleType
 
 
@@ -24,7 +24,7 @@ CrimeData2010ToPresent = CrimeData2010ToPresent.withColumn('LAT', col('LAT').cas
 CrimeData2010ToPresent = CrimeData2010ToPresent.withColumn('LON', col('LON').cast(DoubleType()))
 
 CrimeDataWithZIP = CrimeData2010ToPresent.join(RevGeoCoding, ['LAT', 'LON'], how='left')
-CrimeDataWithIncome = CrimeDataWithZIP.join(IncomeData2015, CrimeDataWithZIP['ZIPcode'] == IncomeData2015['Zip Code'], how='left')
+CrimeDataWithIncome = CrimeDataWithZIP.join(IncomeData2015, (CrimeDataWithZIP['ZIPcode'] == IncomeData2015['Zip Code']) & (year(CrimeDataWithZIP['DATE OCC']) == 2015) , how='left')
 
 CrimeData = CrimeDataWithIncome.select(CrimeData2010ToPresent['*'],col('ZIPcode'), col('Community'),col('Estimated Median Income'))
 CrimeData = CrimeData.withColumn("Estimated Median Income", regexp_replace(col("Estimated Median Income"),'[$,]','') ).withColumn('Estimated Median Income', col('Estimated Median Income').cast(IntegerType())) #i will use this column for q4
