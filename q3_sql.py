@@ -1,8 +1,9 @@
 import sys
 import time
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import col, create_map, lit, year
+from pyspark.sql.functions import col, create_map, lit, year , regexp_replace
 from itertools import chain
+from pyspark.sql.types import IntegerType
 
 # Create a Spark session
 DescentMapping = {
@@ -23,44 +24,43 @@ for executor in [2,3,4]:
     CrimeData = spark.read.csv("CrimeData.csv",header=True, inferSchema=True)
     Income2015 = spark.read.csv("data/income/LA_income_2015.csv",header=True, inferSchema=True)
 
-    CrimeData.createOrReplaceTempView("CrimeDataView")
-    Income2015.createOrReplaceTempView("Income2015View")
+    CrimeData.createOrReplaceTempView("CrimeData")
+    Income2015.createOrReplaceTempView("Income2015")
 
-    Query3SQL = """
-        WITH CrimeData2015 AS (
-            SELECT `Vict Descent`, `ZIPcode`, `Estimated Median Income`
-            FROM CrimeDataView
-            WHERE `Vict Descent` IS NOT NULL AND `ZIPcode` IS NOT NULL AND `Estimated Median Income` IS NOT NULL AND YEAR(`DATE OCC`) = 2015
-        ),
-        TopZIPS AS (
+    spark.sql("""
+        SELECT `Zip Code`, CAST(regexp_replace(`Estimated Median Income`, '[$,]', '') AS INT) AS `Estimated Median Income`
+        FROM Income2015
+        WHERE `Estimated Median Income` IS NOT NULL
+    """).createOrReplaceTempView("Income2015Filtered")
+
+
+    spark.sql("""
+        SELECT `Vict Descent`, `ZIPcode`, `Estimated Median Income`
+        FROM CrimeData
+        WHERE YEAR(`DATE OCC`) = 2015 AND `Vict Descent` IS NOT NULL AND `ZIPcode` IS NOT NULL AND `Estimated Median Income` IS NOT NULL
+    """).createOrReplaceTempView("CrimeData2015")
+
+    spark.sql("""
+        SELECT `Zip Code`
+        FROM Income2015Filtered
+        ORDER BY `Estimated Median Income` DESC
+        LIMIT 3
+    """).union(
+        spark.sql("""
             SELECT `Zip Code`
-            FROM Income2015View
-            ORDER BY `Estimated Median Income` DESC
-            LIMIT 3
-        ),
-        BottomZIPS AS (
-            SELECT `Zip Code`
-            FROM Income2015View
+            FROM Income2015Filtered
             ORDER BY `Estimated Median Income` ASC
             LIMIT 3
-        )
-        SELECT cd.`Vict Descent`, COUNT(*) AS `Count`
-        FROM CrimeData2015 cd
-        JOIN (
-            SELECT `Zip Code`
-            FROM TopZIPS
-            UNION
-            SELECT `Zip Code`
-            FROM BottomZIPS
-        ) zips
-        ON cd.`ZIPcode` = zips.`Zip Code`
-        GROUP BY cd.`Vict Descent`
+        """)).createOrReplaceTempView("ZipsToJoin")
+
+    Result = spark.sql("""
+        SELECT `Vict Descent`, COUNT(*) AS `Count`
+        FROM CrimeData2015
+        JOIN ZipsToJoin ON CrimeData2015.`ZIPcode` = ZipsToJoin.`Zip Code`
+        GROUP BY `Vict Descent`
         ORDER BY `Count` DESC
-        """
-    
+    """)
 
-
-    Result = spark.sql(Query3SQL)
 
     MappingExpr = create_map([lit(x) for x in chain(*DescentMapping.items())])
     Result = Result.withColumn("Vict Descent", MappingExpr.getItem(col("Vict Descent")))

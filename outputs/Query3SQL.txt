@@ -1,20 +1,21 @@
-Query 3 SQL Execution Time: 6.706996202468872with 2 executors
+Query 3 SQL Execution Time: 5.258688926696777with 2 executors
 
-Query 3 SQL Execution Time: 2.614823818206787with 3 executors
+Query 3 SQL Execution Time: 2.540524959564209with 3 executors
 
-Query 3 SQL Execution Time: 2.0919759273529053with 4 executors
+Query 3 SQL Execution Time: 2.130349636077881with 4 executors
 
 ===== Query 3 SQL Result =====
 +--------------------+-----+
 |        Vict Descent|Count|
 +--------------------+-----+
-|               White|  812|
-|               Other|  228|
-|Hispanic/Latin/Me...|  187|
-|             Unknown|  168|
-|               Black|   83|
-|         Other Asian|   42|
-|            Filipino|    2|
-|            Japanese|    1|
+|Hispanic/Latin/Me...| 1053|
+|               White|  610|
+|               Black|  349|
+|               Other|  272|
+|             Unknown|   71|
+|         Other Asian|   46|
+|              Korean|    4|
+|             Chinese|    1|
+|American Indian/A...|    1|
 +--------------------+-----+
 
