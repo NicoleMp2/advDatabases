@@ -5,8 +5,8 @@ from pyspark.sql import SparkSession
 spark = SparkSession.builder.appName("Query1SQL").config("spark.executor.instances", "4").getOrCreate()
 sys.stdout = open("outputs/Query1SQL.txt", "a")
 
-#TODO
-CrimeData = spark.read.csv("CrimeData.csv",header=True, inferSchema=True)
+path = "hdfs://master:9000/user/user/data/"
+CrimeData = spark.read.csv(path+"CrimeData.csv",header=True, inferSchema=True)
 startTime = time.time()
 
 

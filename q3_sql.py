@@ -15,14 +15,16 @@ DescentMapping = {
     'X' : 'Unknown', 'Z' : 'Asian Indian'
     }
 
+path = "hdfs://master:9000/user/user/data/"
 
 sys.stdout = open("outputs/Query3SQL.txt", "w")
 for executor in [2,3,4]:
     spark = SparkSession.builder.appName("Query3SQL"+str(executor)+"Executors").config("spark.executor.instances", executor).getOrCreate()
-#TODO
+    spark.sparkContext.setLogLevel("ERROR")
+
     startTime = time.time()
-    CrimeData = spark.read.csv("CrimeData.csv",header=True, inferSchema=True)
-    Income2015 = spark.read.csv("data/income/LA_income_2015.csv",header=True, inferSchema=True)
+    CrimeData = spark.read.csv(path+"CrimeData.csv",header=True, inferSchema=True)
+    Income2015 = spark.read.csv(path+"income/LA_income_2015.csv",header=True, inferSchema=True)
 
     CrimeData.createOrReplaceTempView("CrimeData")
     Income2015.createOrReplaceTempView("Income2015")

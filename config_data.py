@@ -4,16 +4,15 @@ from pyspark.sql.functions import col , to_date , regexp_replace, year
 from pyspark.sql.types import DateType, IntegerType, DoubleType
 
 
-spark = SparkSession.builder.appName("PrepareData")\
-    .config("spark.sql.legacy.timeParserPolicy", "LEGACY")\
-    .getOrCreate()
+spark = SparkSession.builder.appName("PrepareData").config("spark.sql.legacy.timeParserPolicy", "LEGACY").getOrCreate()
+spark.sparkContext.setLogLevel("ERROR")
 sys.stdout = open("outputs/ConfigData.txt", "w")
-
+path = "hdfs://master:9000/user/user/"
 # Read the CSV files, format where needed and combine datasets
-CrimeData2010To2019 = spark.read.csv("data/Crime_Data_from_2010_to_2019.csv",header=True, inferSchema=True)
-CrimeData2020ToPresent = spark.read.csv("data/Crime_Data_from_2020_to_Present.csv",header=True, inferSchema=True)
-RevGeoCoding = spark.read.csv("data/revgecoding.csv",header=True, inferSchema=True)
-IncomeData2015 = spark.read.csv("data/income/LA_income_2015.csv",header=True, inferSchema=True)
+CrimeData2010To2019 = spark.read.csv(path+"data/Crime_Data_from_2010_to_2019.csv",header=True, inferSchema=True)
+CrimeData2020ToPresent = spark.read.csv(path+"data/Crime_Data_from_2020_to_Present.csv",header=True, inferSchema=True)
+RevGeoCoding = spark.read.csv(path+"data/revgecoding.csv",header=True, inferSchema=True)
+IncomeData2015 = spark.read.csv(path+"data/income/LA_income_2015.csv",header=True, inferSchema=True)
 
 CrimeData2010ToPresent = CrimeData2010To2019.unionByName(CrimeData2020ToPresent, allowMissingColumns=True)
 
@@ -33,7 +32,7 @@ CrimeData = CrimeData.withColumn("Estimated Median Income", regexp_replace(col("
 # Write the DataFrame to a CSV file
 print("Total Rows:", CrimeData.count())
 CrimeData.printSchema()
-CrimeData.coalesce(1).write.format("csv").mode("overwrite").option("header", True).save("CrimeData.csv")
+CrimeData.coalesce(1).write.format("csv").mode("overwrite").option("header", True).save(path+"CrimeData.csv")
 sys.stdout.close()
 sys.stdout = sys.__stdout__
 spark.stop()

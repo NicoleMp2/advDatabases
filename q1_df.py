@@ -4,11 +4,14 @@ from pyspark.sql import SparkSession
 from pyspark.sql.functions import year, month, desc , col ,dense_rank
 from pyspark.sql.window import Window
 # Create a Spark session
-spark = SparkSession.builder.appName("Query1Dataframe").config("spark.executor.instances", "4").getOrCreate()
+path = "hdfs://master:9000/user/user/data/"
+spark = SparkSession.builder.appName("Query1Dataframe").config("spark.executor.instances", 4).getOrCreate()
+spark.sparkContext.setLogLevel("ERROR")
+
 sys.stdout = open("outputs/Query1DF.txt", "w")
 
 #TODO
-CrimeData = spark.read.csv("CrimeData.csv",header=True, inferSchema=True)
+CrimeData = spark.read.csv(path+"CrimeData.csv",header=True, inferSchema=True)
 startTime = time.time()
 # Extract year and month from the "DATE OCC" column
 CrimeDataYYMM = CrimeData.withColumn("Year", year("DATE OCC")).withColumn("Month", month("DATE OCC"))

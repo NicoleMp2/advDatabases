@@ -7,8 +7,9 @@ from pyspark.sql.functions import col, when, desc , sum
 spark = SparkSession.builder.appName("Query2SQL").config("spark.executor.instances", "4").getOrCreate()
 sys.stdout = open("outputs/Query2SQL.txt", "w")
 
-#TODO
-CrimeData = spark.read.csv("CrimeData.csv",header=True, inferSchema=True)
+path = "hdfs://master:9000/user/user/data/"
+
+CrimeData = spark.read.csv(path+"CrimeData.csv",header=True, inferSchema=True)
 startTime = time.time()
 
 CrimeData.createOrReplaceTempView("CrimeDataTable")

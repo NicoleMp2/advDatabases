@@ -14,6 +14,7 @@ DescentMapping = {
     'S' : 'Samoan', 'U' : 'Hawaiian', 'V' : 'Vietnamese', 'W' : 'White',
     'X' : 'Unknown', 'Z' : 'Asian Indian'
     }
+path = "hdfs://master:9000/user/user/data/"
 
 
 for executor in [2,3,4]:
@@ -21,8 +22,8 @@ for executor in [2,3,4]:
 
 #TODO
     startTime = time.time()
-    CrimeData = spark.read.csv("CrimeData.csv",header=True, inferSchema=True)
-    Income2015 = spark.read.csv("data/income/LA_income_2015.csv",header=True, inferSchema=True)
+    CrimeData = spark.read.csv(path+"CrimeData.csv",header=True, inferSchema=True)
+    Income2015 = spark.read.csv(path+"income/LA_income_2015.csv",header=True, inferSchema=True)
     
     CrimeData2015 = CrimeData.filter((year(col("DATE OCC")) == 2015) & col("Vict Descent").isNotNull() & col("ZIPcode").isNotNull() & col("Estimated Median Income").isNotNull()).select("Vict Descent", "ZIPcode", "Estimated Median Income")
 

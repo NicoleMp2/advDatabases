@@ -7,9 +7,9 @@ from pyspark.sql.functions import col, when, desc , sum
 # Create a Spark session
 spark = SparkSession.builder.appName("Query2RDD").config("spark.executor.instances", "4").getOrCreate()
 sys.stdout = open("outputs/Query2RDD.txt", "w")
+path = "hdfs://master:9000/user/user/data/"
 
-#TODO
-CrimeData = spark.read.csv("CrimeData.csv",header=True, inferSchema=True)
+CrimeData = spark.read.csv(path+"CrimeData.csv",header=True, inferSchema=True)
 startTime = time.time()
 
 CrimeDataRDD = CrimeData.rdd.filter(lambda x: x['Premis Desc'] == "STREET")
