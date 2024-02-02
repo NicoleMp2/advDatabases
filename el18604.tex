@@ -12,12 +12,14 @@
 \usepackage{tikz-3dplot,pgfplots}
 \usepackage{wrapfig}
 \usepackage[]{hyperref}
+\usepackage{verbatim}
+
 \begin{document}
 
 \begin{center}
 {\LARGE Προχωρημένα Θέματα Βάσεων Δεδομένων}
 
-\begin{tabular}{rl}
+\begin{tabular}{ll}
 Ονοματεπώνυμο: & Μπάρμπα Παναγιώτα-Νικολέττα \\
 ΑΜ : & 03118604 \\
 Εξάμηνο : & 11ο \\
@@ -30,7 +32,7 @@
 
 \section*{Ζητούμενο 1}
 
-\par Η εγκατάσταση και διαμόρφωση της πλατφόρμας εκτέλεσης Apache Spark ώστε να εκτελείται πάνω από το διαχειριστή πόρων του Apache Hadoop, YARN, έγινε σε 2 εικονικά μηχανήματα σε τοπικό μηχάνημα (δεν χρησιμοποιήθηκε το \texten{cloud service okeanos}). 
+\par Η εγκατάσταση και διαμόρφωση της πλατφόρμας εκτέλεσης Apache Spark ώστε να εκτελείται πάνω από το διαχειριστή πόρων του Apache Hadoop, YARN, έγινε σε 2 εικονικά μηχανήματα σε τοπικό μηχάνημα (δεν χρησιμοποιήθηκε το \texten{cloud service okeanos}). Η διαμόρφωση των εργαλείων που χρησιμοποιήθηκαν περιγράφεται στο \texten{README} αρχείο του \texten{Github} αποθετηρίου.
 \par Οι \texten{web} διεπαφές των \texten{Apache Spark} και \texten{Apache Hadoop} είναι προσβάσιμες από τους παρακάτω συνδέσμους:
 \begin{itemize}
   \item \texten{Apache Spark} : \href{http://192.168.64.9:8080/}{\texten{http://192.168.64.9:8080/}}
@@ -38,6 +40,19 @@
   \item \texten{Apache Hadoop YARN} : \href{http://192.168.64.9:8088/}{\texten{http://192.168.64.9:8088/}}
 \end{itemize}
 
+\section*{Ζητούμενο 2}
+Αυτό όπως και τα επόμενα ζητούμενα υλοποιήθηκαν με χρήση του \texten{PySpark} και της γλώσσας προγραμματισμού \texten{Python3}.
+\par Δημιουργήθηκε ένα \texten{DataFrame} από το βασικό σύνολο δεδομένων και διατηρώντας τα ονόματα των στηλών, προσαρμόστηκαν οι τύποι ορισμένων στηλών ως εξής:
+\begin{itemize}
+  \item \texten{Date Rptd} : \texten{string} $\rightarrow$ \texten{date}
+  \item \texten{DATE OCC} : \texten{string} $\rightarrow$ \texten{date}
+  \item \texten{Vict Age} : \texten{string} $\rightarrow$ \texten{integer}
+  \item \texten{LAT} : \texten{double} $\rightarrow$ \texten{double}
+  \item \texten{LON} : \texten{double} $\rightarrow$ \texten{double}
+\end{itemize}
+\par Επίσης, στο αρχειο \texten{IncomeData2015.csv} η στήλη  \texten{"Estimated Median Income"} έχει τύπο \texten{string} της μορφής: "\$\texten{number}", οπότε αφαιρέθηκε το '\$' και έγινε μετατροπή σε \texten{integer}.
+\par Τέλος, ενώθηκαν τα \texten{DataFrame} που περιέχουν τα δεδομένα καταγραφής εγκλημάτων για το \texten{Los Angeles} από το 2010 μέχρι το 2019 και από το 2020 μέχρι σήμερα, τα δεδομένα με \texten{reverse geocoding} πληροφορία και τα δεδομένα σχετικά με το μέσο εισόδημα ανά νοικοκυριό και ταχυδρομικό κώδικα δημιουργώντας ένα νέο \texten{DataFrame}, το οποίο αποθηκέυτηκε, με την εξής μορφή:
+\texten{\verbatiminput{outputs/ConfigData.txt}}
 
 \section*{Ζητούμενο 3}
 
@@ -45,13 +60,5 @@
 \section*{Ζητούμενο 4}
 
 
-
-\section*{Ζητούμενο 6}
-
-
-% \begin{figure}[h]
-%   \includegraphics[width=10cm,height=6cm]{Screenshot 2023-12-29 at 20.14.34.png}
-%   \centering
-% \end{figure}
 
 \end{document}

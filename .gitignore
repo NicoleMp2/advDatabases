@@ -6,3 +6,7 @@ spark-warehouse/*
 el18604.*
 !el18604.tex
 !el18604.pdf
+IncomeData2015.csv/_SUCCESS
+IncomeData2015.csv/._SUCCESS.crc
+IncomeData2015.csv/.part-00000-ad4eb30d-ce56-4fb7-98b7-6707a031f6ad-c000.csv.crc
+IncomeData2015.csv/part-00000-ad4eb30d-ce56-4fb7-98b7-6707a031f6ad-c000.csv

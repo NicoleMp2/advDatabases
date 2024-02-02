@@ -13,7 +13,7 @@ spark.sparkContext.setLogLevel("ERROR")
 CrimeData2010To2019 = spark.read.csv(path+"data/Crime_Data_from_2010_to_2019.csv",header=True, inferSchema=True)
 CrimeData2020ToPresent = spark.read.csv(path+"data/Crime_Data_from_2020_to_Present.csv",header=True, inferSchema=True)
 RevGeoCoding = spark.read.csv(path+"data/revgecoding.csv",header=True, inferSchema=True)
-IncomeData2015 = spark.read.csv(path+"data/income/LA_income_2015.csv",header=True, inferSchema=True)
+IncomeData2015 = spark.read.csv(path+"data/LA_income_2015.csv",header=True, inferSchema=True)
 
 #Concate the crime data sets
 CrimeData2010ToPresent = CrimeData2010To2019.unionByName(CrimeData2020ToPresent, allowMissingColumns=True)
