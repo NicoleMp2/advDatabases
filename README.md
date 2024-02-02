@@ -18,7 +18,7 @@ The project objective was to process a large dataset on Apache Hadoop's distribu
 7. Execute each query with `spark-submit --master spark://master:7077 advDatabases/q{i}_{DF,SQL,RDD}.py`
 (Or execute `run_all.sh` to run all queries)
 
-:exclamation: Steps 3 and 4 can be skipped by executing `reset_master.sh` script at master node but MUST execute `reset_worker.sh` at worker node,too.
+:exclamation: Steps 3 and 4 can be skipped by executing `reset_master.sh` script at master node and `reset_worker.sh` at worker node,too.
 ## Implemented Queries
 1. Find, for each year, the 3 months with the highest number of recorded crimes and print the total number of criminal activities recorded at that time, and the position of that month in the ranking within the corresponding year.
 2. Sort the time of the day  according to the number of crimes recorded on the street (STREET).The day is divided in:
