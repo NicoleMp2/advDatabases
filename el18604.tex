@@ -13,8 +13,6 @@
 \usepackage{wrapfig}
 \usepackage[]{hyperref}
 \usepackage{verbatim}
-\usepackage{listings}
-
 
 
 \makeatletter
@@ -28,6 +26,7 @@
 \makeatother
 
 
+
 \begin{document}
 
 \begin{center}
@@ -37,7 +36,7 @@
 Ονοματεπώνυμο: & Μπάρμπα Παναγιώτα-Νικολέττα \\
 ΑΜ : & 03118604 \\
 Εξάμηνο : & 11ο \\
-Ομάδα : 41 \\
+Ομάδα : & 41 \\
 \texten{Github} : & \href{https://github.com/NicoleMp2/advDatabases}{\texten{Github Link}} \\
 \end{tabular}
 \end{center}
@@ -46,7 +45,7 @@
 
 \section*{Ζητούμενο 1}
 
-\par Η εγκατάσταση και διαμόρφωση της πλατφόρμας εκτέλεσης Apache Spark ώστε να εκτελείται πάνω από το διαχειριστή πόρων του Apache Hadoop, YARN, έγινε σε 2 εικονικά μηχανήματα σε τοπικό μηχάνημα (δεν χρησιμοποιήθηκε το \texten{cloud service okeanos}). Η διαμόρφωση των εργαλείων που χρησιμοποιήθηκαν περιγράφεται στο \texten{README} αρχείο του \texten{Github} αποθετηρίου.
+\par Η εγκατάσταση και διαμόρφωση της πλατφόρμας εκτέλεσης \texten{Apache Spark} ώστε να εκτελείται πάνω από το διαχειριστή πόρων του \texten{Apache Hadoop, YARN}, έγινε σε 2 εικονικά μηχανήματα σε τοπικό μηχάνημα (δεν χρησιμοποιήθηκε το \texten{cloud service okeanos}). Η διαμόρφωση των εργαλείων που χρησιμοποιήθηκαν περιγράφεται στο \texten{README} αρχείο του \texten{Github} αποθετηρίου.
 \par Οι \texten{web} διεπαφές των \texten{Apache Spark} και \texten{Apache Hadoop} είναι προσβάσιμες από τους παρακάτω συνδέσμους:
 \begin{itemize}
   \item \texten{Apache Spark} : \href{http://192.168.64.9:8080/}{\texten{http://192.168.64.9:8080/}}
@@ -55,7 +54,7 @@
 \end{itemize}
 
 \section*{Ζητούμενο 2}
-Αυτό όπως και τα επόμενα ζητούμενα υλοποιήθηκαν με χρήση του \texten{PySpark} και της γλώσσας προγραμματισμού \texten{Python3}.
+Αυτό όπως και τα επόμενα ζητούμενα υλοποιήθηκαν με χρήση της γλώσσας προγραμματισμού \texten{Python3} και του \texten{PySpark}.
 \par Δημιουργήθηκε ένα \texten{DataFrame} από το βασικό σύνολο δεδομένων και διατηρώντας τα ονόματα των στηλών, προσαρμόστηκαν οι τύποι ορισμένων στηλών ως εξής:
 \begin{itemize}
   \item \texten{Date Rptd} : \texten{string} $\rightarrow$ \texten{date}
@@ -64,26 +63,30 @@
   \item \texten{LAT} : \texten{double} $\rightarrow$ \texten{double}
   \item \texten{LON} : \texten{double} $\rightarrow$ \texten{double}
 \end{itemize}
-\par Επίσης, στο αρχειο \texten{IncomeData2015.csv} η στήλη  \texten{"Estimated Median Income"} έχει τύπο \texten{string} της μορφής: "\$\texten{number}", οπότε αφαιρέθηκε το '\$' και έγινε μετατροπή σε \texten{integer}.
+\par Επίσης, στο αρχειο \texten{IncomeData2015.csv} η στήλη  \texten{"Estimated Median Income"} έχει τύπο \texten{string} της μορφής: "\$\texten{number}" , οπότε αφαιρέθηκε το "\$" και έγινε μετατροπή σε \texten{integer}.
 \par Τέλος, ενώθηκαν τα \texten{DataFrame} που περιέχουν τα δεδομένα καταγραφής εγκλημάτων για το \texten{Los Angeles} από το 2010 μέχρι το 2019 και από το 2020 μέχρι σήμερα, τα δεδομένα με \texten{reverse geocoding} πληροφορία και τα δεδομένα σχετικά με το μέσο εισόδημα ανά νοικοκυριό και ταχυδρομικό κώδικα δημιουργώντας ένα νέο \texten{DataFrame}, το οποίο στην συνέχεια αποθηκέυτηκε.
-\newpage Ο συνολικός αριθμός γραμμών και ο τύπος κάθε στήλής φαίνονται παρακάτω:
+\newpage Ο συνολικός αριθμός γραμμών και ο τύπος κάθε στήλης φαίνονται παρακάτω:
 \texten{\verbatiminput{outputs/ConfigData.txt}}
-
+\newpage
 \section*{Ζητούμενο 3}
-Το \texten{Query 1} υλοποιήθηκε χρησιμοποιώντας τα \texten{DataFrame} και \texten{SQL API} με 4 \texten{Spark Executors}. Οι δύο υλοποιήσεις βρίσκονται σε δύο διαφορετικά αρχεία και προφανώς δίνουν το ίδιο αποτέλεσμα αλλα σε διαφορετικούς χρόνους εκτέλεσης\footnote[1]{Να σημειωθεί ότι οι χρόνοι εκτέλεσεις αφορούν αποκλειστικά την διάρκεια εκτέλεσεις των ερωτημάτων και δεν προσμετράται το φόρτωμα και η εκτύπωση των στοιχείων}. Γεγονός ελαφρώς αναμενόμενο αφού η βιβλιογραφία αναφέρει ότι το \texten{DataFrame API} έχει καλύτερη επίδοση για πιο περίπλοκα ερωτήματα. Σε κάθε περίπτωση,όμως, οι χρόνοι εκτέλεσης δεν διαφέρουν πολύ, καθώς και τα δύο \texten{APIs} χρησιμοποιούν το ίδιο \texten{execution plan} και το ίδιο \texten{query optimizer}. Συνεπώς, παίζει ρόλο και η εξοικείωση του προγραμματιστή με το κάθε \texten{API},σημείο που υπερτερεί το \texten{DataFrame API} διότι προσφέρει μεγαλύτερη ευκολία και έλεγχο στον προγραμματιστή. 
-Οι χρόνοι εκτέλεσης και τα αποτελέσματα φαίνονται παρακάτω: \break \break
+Το \texten{Query 1} υλοποιήθηκε χρησιμοποιώντας τα \texten{DataFrame} και \texten{SQL API} με 4 \texten{Spark Executors}. Οι δύο υλοποιήσεις βρίσκονται σε δύο διαφορετικά αρχεία και προφανώς δίνουν το ίδιο αποτέλεσμα αλλα σε διαφορετικούς χρόνους εκτέλεσης\footnote[1]{Να σημειωθεί ότι οι χρόνοι εκτέλεσης αφορούν αποκλειστικά την διάρκεια εκτέλεσης των ερωτημάτων και δεν προσμετράται το φόρτωμα και η εκτύπωση των στοιχείων}. Γεγονός ελαφρώς αναμενόμενο αφού η βιβλιογραφία αναφέρει ότι το \texten{DataFrame API} έχει καλύτερη επίδοση για πιο περίπλοκα ερωτήματα. Σε κάθε περίπτωση, όμως, οι χρόνοι εκτέλεσης δεν διαφέρουν πολύ, καθώς και τα δύο \texten{APIs} χρησιμοποιούν το ίδιο \texten{execution plan} και το ίδιο \texten{query optimizer}. Συνεπώς, παίζει ρόλο και η εξοικείωση του προγραμματιστή με το κάθε \texten{API}, σημείο που υπερτερεί το \texten{DataFrame API} διότι προσφέρει μεγαλύτερη ευκολία και έλεγχο. 
+Οι χρόνοι εκτέλεσης και τα αποτελέσματα φαίνονται παρακάτω: \break
 \texten{\texttt{\readfirstline{outputs/Query1DF.txt}}}
 \texten{\verbatiminput{outputs/Query1SQL.txt}}
 
 \section*{Ζητούμενο 4}
-Αντίστοιχα με παραπάνω το \texten{Query 2} υλοποιήθηκε χρησιμοποιώντας τα \texten{DataFrame}, \texten{SQL} και \texten{RDD API} με 4 \texten{Spark Executors}. Οι τρεις υλοποιήσεις βρίσκονται σε τρία διαφορετικά αρχεία. Παρατηρούμε ότι ο χρόνος εκτέλεσης του \texten{RDD API} είναι πολύ μεγαλύτερος από τους άλλους δύο. Αυτό οφείλεται στο γεγονός ότι το \texten{RDD API} είναι πιο χαμηλού επιπέδου και απαιτεί περισσότερη "χειρωνακτική" επεξεργασία από τον προγραμματιστή. Αντίθετα, το \texten{DataFrame API} και το \texten{SQL API} προσφέρουν υψηλότερου επιπέδου εργαλεία και εκτελούν μια σειρά από βελτιστοποιήσεις στον κώδικα προτού εκτελεστούν, δίνοντας έτσι την βέλτιστη δομή σε αυτόν. Ακόμα, από την στιγμή που θέλουμε να παραλληλοποιήσομε την εκτέλεση του ερωτήματος(\texten{4 Spark Executors}), η καταλληλότερη δομή είναι το \texten{DataFrame API} αφού είναι πολύ αποδοτικό στην διαχείριση πόρων.Οι χρόνοι εκτέλεσης και τα αποτελέσματα φαίνονται παρακάτω: \break \break
+Αντίστοιχα με παραπάνω, το \texten{Query 2} υλοποιήθηκε χρησιμοποιώντας τα \texten{DataFrame}, \texten{SQL} και \texten{RDD API} με 4 \texten{Spark Executors}. Οι τρεις υλοποιήσεις βρίσκονται σε τρία διαφορετικά αρχεία. Είναι προφανές ότι ο χρόνος εκτέλεσης του \texten{RDD API} είναι πολύ μεγαλύτερος από τους άλλους δύο. Αυτό οφείλεται στο γεγονός ότι το \texten{RDD API} είναι πιο χαμηλού επιπέδου και απαιτεί περισσότερη "χειρωνακτική" επεξεργασία από τον προγραμματιστή. Αντίθετα, το \texten{DataFrame API} και το \texten{SQL API} προσφέρουν υψηλότερου επιπέδου εργαλεία και εκτελούν μια σειρά από βελτιστοποιήσεις στον κώδικα προτού εκτελεστούν, δίνοντας έτσι την βέλτιστη δομή σε αυτόν. Ακόμα, από την στιγμή που επιθυμείται η παραλλήλοποιηση της εκτέλεσης του ερωτήματος(\texten{4 Spark Executors}), η καταλληλότερη δομή είναι το \texten{DataFrame API} αφού είναι πολύ αποδοτικό στην διαχείριση πόρων.Οι χρόνοι εκτέλεσης και τα αποτελέσματα φαίνονται παρακάτω: \break
 \texten{\texttt{\readfirstline{outputs/Query2DF.txt}}} \break
 \texten{\texttt{\readfirstline{outputs/Query2SQL.txt}}}
 \texten{\verbatiminput{outputs/Query2RDD.txt}}
 
 \section*{Ζητούμενο 5}
-Το \texten{Query 3} υλοποιήθηκε χρησιμοποιώντας τα \texten{DataFrame} και \texten{SQL API} με 2,3 και \texten{Spark Executors}. Οι χρόνοι εκτέλεσης και τα αποτελέσματα φαίνονται παρακάτω: \break \break
-\texten{\texttt{\readlines{outputs/Query3DF.txt}{6}}} \break
-
-
+Το \texten{Query 3} υλοποιήθηκε χρησιμοποιώντας τα \texten{DataFrame} και \texten{SQL API} με 2,3 και \texten{Spark Executors}. Όπως φαίνεται από τα αποτελέσματα όσο αυξάνει ο αριθμός των \texten{Spark Executors} τόσο μειώνεται ο χρόνος εκτέλεσης. Βέβαια, είναι σημαντικό να ληφθεί υπόψη ότι η αύξηση των \texten{Spark Executors} δεν οδηγεί απαραίτητα σε γραμμική μείωση του χρόνου εκτέλεσης. Αυτό οφείλεται στο γεγονός ότι η αύξηση των \texten{Spark Executors} αυξάνει τον αριθμό των \texten{tasks} που εκτελούνται παράλληλα, αλλά αυξάνει επίσης τον αριθμό των \texten{data shuffles} που πρέπει να εκτελεστούν, πράγμα ανεπιθύμιτο. Συνεπώς, η βέλτιστη επιλογή του αριθμού των \texten{Spark Executors} εξαρτάται από την φύση των δεδομένων και την φύση του ερωτήματος.
+Οι χρόνοι εκτέλεσης και τα αποτελέσματα φαίνονται παρακάτω: \\
+\texten{Query 3 Dataframe Execution Time: 5.956484794616699with 2 executors
+\\ \\
+Query 3 Dataframe Execution Time: 3.3060457706451416with 3 executors
+\\ \\
+Query 3 Dataframe Execution Time: 2.7904648780822754with 4 executors}
+\texten{\verbatiminput{outputs/Query3SQL.txt}}
 \end{document}
