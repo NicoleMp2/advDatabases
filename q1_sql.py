@@ -1,14 +1,16 @@
 import sys
 import time
 from pyspark.sql import SparkSession
+
+path = "hdfs://master:9000/user/user/"
+sys.stdout = open("outputs/Query1SQL.txt", "w")
+
 # Create a Spark session
 spark = SparkSession.builder.appName("Query1SQL").config("spark.executor.instances", "4").getOrCreate()
-sys.stdout = open("outputs/Query1SQL.txt", "a")
+spark.sparkContext.setLogLevel("ERROR")
 
-path = "hdfs://master:9000/user/user/data/"
 CrimeData = spark.read.csv(path+"CrimeData.csv",header=True, inferSchema=True)
 startTime = time.time()
-
 
 CrimeData.createOrReplaceTempView("CrimeDataTable")
 
@@ -38,14 +40,11 @@ ORDER BY Year, Rank
 Result = spark.sql(ResultSQL)
 
 
-totalTime = time.time() - startTime
 
-
-print("Query 1 SQL Execution Time: " + str(totalTime) + "\n")
+print("Query 1 SQL Execution Time: " + str(time.time() - startTime) + "\n")
 print("===== Query 1 SQL Result =====")
 Result.show(Result.count(), truncate=False)
 
 sys.stdout.close()
 sys.stdout = sys.__stdout__
-# Stop the Spark session
 spark.stop()

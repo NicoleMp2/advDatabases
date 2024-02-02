@@ -3,17 +3,19 @@ import time
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, when, desc , sum
 
-# Create a Spark session
-spark = SparkSession.builder.appName("Query2SQL").config("spark.executor.instances", "4").getOrCreate()
+path = "hdfs://master:9000/user/user/data/"
 sys.stdout = open("outputs/Query2SQL.txt", "w")
 
-path = "hdfs://master:9000/user/user/data/"
+# Create a Spark session
+spark = SparkSession.builder.appName("Query2SQL").config("spark.executor.instances", "4").getOrCreate()
+
 
 CrimeData = spark.read.csv(path+"CrimeData.csv",header=True, inferSchema=True)
 startTime = time.time()
 
 CrimeData.createOrReplaceTempView("CrimeDataTable")
 
+#Filter the data for crimes that occurred on the "STREET",categorize and group the crimes by time of day, and order the result in descending order of count
 TimeOfDaySQL = """
     SELECT *,
            CASE
@@ -26,6 +28,7 @@ TimeOfDaySQL = """
     FROM CrimeDataTable
     WHERE `Premis Desc` = "STREET"
 """
+
 ResultSQL = """
     SELECT `Time of Day`, COUNT(*) AS CrimeCount
     FROM ({})
@@ -35,14 +38,11 @@ ResultSQL = """
 
 Result = spark.sql(ResultSQL)
 
-totalTime = time.time() - startTime
 
-print("Query 2 SQL Execution Time: " + str(totalTime) + "\n")
+print("Query 2 SQL Execution Time: " + str(time.time() - startTime) + "\n")
 print("===== Query 2 SQL Result =====")
 Result.show(Result.count(), truncate=False)
 
 sys.stdout.close()
 sys.stdout = sys.__stdout__
-
-#TODO
 spark.stop()

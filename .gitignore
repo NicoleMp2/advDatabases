@@ -2,3 +2,7 @@
 .vscode/*
 CrimeData.csv/*
 data/*
+spark-warehouse/*
+el18604.*
+!el18604.tex
+!el18604.pdf
