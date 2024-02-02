@@ -30,7 +30,7 @@ FROM ({}) MonthlyCrimeCount
 
 # Filter the top 3 months for each year
 ResultSQL = """
-SELECT Year, Month, CrimeCount
+SELECT Year, Month, CrimeCount, Rank
 FROM ({}) Top3Months
 WHERE Rank <= 3
 ORDER BY Year, Rank

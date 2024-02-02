@@ -13,6 +13,20 @@
 \usepackage{wrapfig}
 \usepackage[]{hyperref}
 \usepackage{verbatim}
+\usepackage{listings}
+
+
+
+\makeatletter
+\newread\file@read
+\newcommand{\readfirstline}[1]{%
+  \openin\file@read=#1\relax
+  \read\file@read to\@tempa
+  \closein\file@read
+  \@tempa
+}
+\makeatother
+
 
 \begin{document}
 
@@ -51,14 +65,25 @@
   \item \texten{LON} : \texten{double} $\rightarrow$ \texten{double}
 \end{itemize}
 \par Επίσης, στο αρχειο \texten{IncomeData2015.csv} η στήλη  \texten{"Estimated Median Income"} έχει τύπο \texten{string} της μορφής: "\$\texten{number}", οπότε αφαιρέθηκε το '\$' και έγινε μετατροπή σε \texten{integer}.
-\par Τέλος, ενώθηκαν τα \texten{DataFrame} που περιέχουν τα δεδομένα καταγραφής εγκλημάτων για το \texten{Los Angeles} από το 2010 μέχρι το 2019 και από το 2020 μέχρι σήμερα, τα δεδομένα με \texten{reverse geocoding} πληροφορία και τα δεδομένα σχετικά με το μέσο εισόδημα ανά νοικοκυριό και ταχυδρομικό κώδικα δημιουργώντας ένα νέο \texten{DataFrame}, το οποίο αποθηκέυτηκε, με την εξής μορφή:
+\par Τέλος, ενώθηκαν τα \texten{DataFrame} που περιέχουν τα δεδομένα καταγραφής εγκλημάτων για το \texten{Los Angeles} από το 2010 μέχρι το 2019 και από το 2020 μέχρι σήμερα, τα δεδομένα με \texten{reverse geocoding} πληροφορία και τα δεδομένα σχετικά με το μέσο εισόδημα ανά νοικοκυριό και ταχυδρομικό κώδικα δημιουργώντας ένα νέο \texten{DataFrame}, το οποίο στην συνέχεια αποθηκέυτηκε.
+\newpage Ο συνολικός αριθμός γραμμών και ο τύπος κάθε στήλής φαίνονται παρακάτω:
 \texten{\verbatiminput{outputs/ConfigData.txt}}
 
 \section*{Ζητούμενο 3}
-
+Το \texten{Query 1} υλοποιήθηκε χρησιμοποιώντας τα \texten{DataFrame} και \texten{SQL API} με 4 \texten{Spark Executors}. Οι δύο υλοποιήσεις βρίσκονται σε δύο διαφορετικά αρχεία και προφανώς δίνουν το ίδιο αποτέλεσμα αλλα σε διαφορετικούς χρόνους εκτέλεσης\footnote[1]{Να σημειωθεί ότι οι χρόνοι εκτέλεσεις αφορούν αποκλειστικά την διάρκεια εκτέλεσεις των ερωτημάτων και δεν προσμετράται το φόρτωμα και η εκτύπωση των στοιχείων}. Γεγονός ελαφρώς αναμενόμενο αφού η βιβλιογραφία αναφέρει ότι το \texten{DataFrame API} έχει καλύτερη επίδοση για πιο περίπλοκα ερωτήματα. Σε κάθε περίπτωση,όμως, οι χρόνοι εκτέλεσης δεν διαφέρουν πολύ, καθώς και τα δύο \texten{APIs} χρησιμοποιούν το ίδιο \texten{execution plan} και το ίδιο \texten{query optimizer}. Συνεπώς, παίζει ρόλο και η εξοικείωση του προγραμματιστή με το κάθε \texten{API},σημείο που υπερτερεί το \texten{DataFrame API} διότι προσφέρει μεγαλύτερη ευκολία και έλεγχο στον προγραμματιστή. 
+Οι χρόνοι εκτέλεσης και τα αποτελέσματα φαίνονται παρακάτω: \break \break
+\texten{\texttt{\readfirstline{outputs/Query1DF.txt}}}
+\texten{\verbatiminput{outputs/Query1SQL.txt}}
 
 \section*{Ζητούμενο 4}
+Αντίστοιχα με παραπάνω το \texten{Query 2} υλοποιήθηκε χρησιμοποιώντας τα \texten{DataFrame}, \texten{SQL} και \texten{RDD API} με 4 \texten{Spark Executors}. Οι τρεις υλοποιήσεις βρίσκονται σε τρία διαφορετικά αρχεία. Παρατηρούμε ότι ο χρόνος εκτέλεσης του \texten{RDD API} είναι πολύ μεγαλύτερος από τους άλλους δύο. Αυτό οφείλεται στο γεγονός ότι το \texten{RDD API} είναι πιο χαμηλού επιπέδου και απαιτεί περισσότερη "χειρωνακτική" επεξεργασία από τον προγραμματιστή. Αντίθετα, το \texten{DataFrame API} και το \texten{SQL API} προσφέρουν υψηλότερου επιπέδου εργαλεία και εκτελούν μια σειρά από βελτιστοποιήσεις στον κώδικα προτού εκτελεστούν, δίνοντας έτσι την βέλτιστη δομή σε αυτόν. Ακόμα, από την στιγμή που θέλουμε να παραλληλοποιήσομε την εκτέλεση του ερωτήματος(\texten{4 Spark Executors}), η καταλληλότερη δομή είναι το \texten{DataFrame API} αφού είναι πολύ αποδοτικό στην διαχείριση πόρων.Οι χρόνοι εκτέλεσης και τα αποτελέσματα φαίνονται παρακάτω: \break \break
+\texten{\texttt{\readfirstline{outputs/Query2DF.txt}}} \break
+\texten{\texttt{\readfirstline{outputs/Query2SQL.txt}}}
+\texten{\verbatiminput{outputs/Query2RDD.txt}}
 
+\section*{Ζητούμενο 5}
+Το \texten{Query 3} υλοποιήθηκε χρησιμοποιώντας τα \texten{DataFrame} και \texten{SQL API} με 2,3 και \texten{Spark Executors}. Οι χρόνοι εκτέλεσης και τα αποτελέσματα φαίνονται παρακάτω: \break \break
+\texten{\texttt{\readlines{outputs/Query3DF.txt}{6}}} \break
 
 
 \end{document}
